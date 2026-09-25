@@ -1,0 +1,101 @@
+:root {
+	--toggle-width: 65px;
+	--toggle-height: 30px;
+	--toggle-padding: 3px;
+	--circle-size: 24px;
+	--transition-speed: 0.25s;
+}
+
+.dark_mode {
+	/* margin-top: -20px; */
+	margin-left: 10px;
+	display: inline-block;
+}
+
+.dark_mode_input {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+.dark_mode_input:focus-visible + .dark_mode_label {
+	outline: 2px solid #3b82f6;
+	outline-offset: 2px;
+}
+
+.dark_mode_label {
+	width: var(--toggle-width);
+	height: var(--toggle-height);
+	position: relative;
+	display: block;
+	background: #ebebeb;
+	border-radius: 100vmax;
+	box-shadow: inset 0 5px 15px rgba(0, 0, 0, 0.35),
+		inset 0 -5px 15px rgba(255, 255, 255, 0.35);
+	cursor: pointer;
+	transition: background var(--transition-speed) ease;
+}
+
+.dark_mode_label::after {
+	content: '';
+	width: var(--circle-size);
+	height: var(--circle-size);
+	position: absolute;
+	top: var(--toggle-padding);
+	left: var(--toggle-padding);
+	background: linear-gradient(180deg, #ffcc89, #d8860b);
+	border-radius: 50%;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+	transition: transform var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1),
+		background var(--transition-speed) ease, width var(--transition-speed) ease;
+}
+
+.dark_mode_label:active::after {
+	width: 28px;
+}
+
+.dark_mode_label svg {
+	position: absolute;
+	width: 18px;
+	height: 18px;
+	top: 50%;
+	transform: translateY(-50%);
+	z-index: 10;
+	pointer-events: none;
+	transition: fill var(--transition-speed) ease;
+}
+
+.dark_mode_label svg.sun {
+	left: 6px;
+	fill: #fff;
+}
+
+.dark_mode_label svg.moon {
+	right: 6px;
+	fill: #7e7e7e;
+}
+
+.dark_mode_input:checked + .dark_mode_label {
+	background: #242424;
+}
+
+.dark_mode_input:checked + .dark_mode_label::after {
+	transform: translateX(
+		calc(var(--toggle-width) - var(--circle-size) - (var(--toggle-padding) * 2))
+	);
+	background: linear-gradient(180deg, #777, #3a3a3a);
+}
+
+.dark_mode_input:checked + .dark_mode_label svg.sun {
+	fill: #7e7e7e;
+}
+
+.dark_mode_input:checked + .dark_mode_label svg.moon {
+	fill: #fff;
+}
