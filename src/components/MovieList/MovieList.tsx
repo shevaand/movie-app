@@ -1,18 +1,9 @@
-import _ from 'lodash'
 import { useEffect, useMemo, useState, type ChangeEvent } from 'react'
+import type { Movie } from '../../types'
 import Loader from '../Loader/Loader'
 import FilterGroup from './FilterGroup'
 import MovieCard from './MovieCard/MovieCard'
 import './MovieList.css'
-
-interface Movie {
-	id: number
-	title: string
-	poster_path: string
-	vote_average: number
-	release_date: string
-	overview: string
-}
 
 interface MovieListProps {
 	type: 'popular' | 'top_rated' | 'upcoming'
@@ -34,46 +25,62 @@ const MovieList = ({ type, title, emoji }: MovieListProps) => {
 	})
 
 	const [isLoading, setIsLoading] = useState<boolean>(true)
+	const [error, setError] = useState<string | null>(null)
 
 	useEffect(() => {
+		const controller = new AbortController()
+
 		const fetchMovies = async () => {
 			try {
 				setIsLoading(true)
+				setError(null)
+
 				const response = await fetch(
 					`https://api.themoviedb.org/3/movie/${type}?api_key=${
 						import.meta.env.VITE_TMDB_API_KEY
-					}`
+					}`,
+					{ signal: controller.signal }
 				)
-				const data = await response.json()
-				const results = data.results as Movie[]
 
-				setMovies(results)
-			} catch (error) {
-				console.error('Error to upload', error)
+				if (!response.ok) {
+					throw new Error(`Request failed with status ${response.status}`)
+				}
+
+				const data = await response.json()
+				setMovies((data.results ?? []) as Movie[])
+			} catch (err) {
+				if (err instanceof DOMException && err.name === 'AbortError') return
+				console.error('Failed to load movies:', err)
+				setError('Could not load movies. Please try again later.')
 			} finally {
-				setIsLoading(false)
+				if (!controller.signal.aborted) setIsLoading(false)
 			}
 		}
 
 		fetchMovies()
+
+		return () => controller.abort()
 	}, [type])
 
 	const sortedAndFilteredMovies = useMemo(() => {
-		let result = movies.filter(movie => movie.vote_average >= minRating)
+		const result = movies.filter(movie => movie.vote_average >= minRating)
 
-		if (sort.by !== 'default') {
-			result = _.orderBy(result, [sort.by], [sort.order])
-		}
+		if (sort.by === 'default') return result
 
-		return result
+		const direction = sort.order === 'asc' ? 1 : -1
+
+		return result.sort((a, b) => {
+			if (sort.by === 'vote_average') {
+				return (a.vote_average - b.vote_average) * direction
+			}
+			return (
+				(a.release_date ?? '').localeCompare(b.release_date ?? '') * direction
+			)
+		})
 	}, [movies, minRating, sort])
 
 	const handleFilter = (rate: number) => {
-		if (rate === minRating) {
-			setMinRating(0)
-		} else {
-			setMinRating(rate)
-		}
+		setMinRating(prev => (prev === rate ? 0 : rate))
 	}
 
 	const handleSort = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -120,7 +127,9 @@ const MovieList = ({ type, title, emoji }: MovieListProps) => {
 				</div>
 			</header>
 
-			{isLoading ? (
+			{error ? (
+				<p className='error_message'>{error}</p>
+			) : isLoading ? (
 				<Loader text='Loading Movies...' minHeight='50vh' />
 			) : (
 				<div className='movie_cards'>

@@ -4,9 +4,9 @@ import './App.css'
 import Fire from './assets/fire.png'
 import Star from './assets/glowing-star.png'
 import Party from './assets/partying-face.png'
-import MovieDetail from './components/MovieList/MovieCard/MovieDetail/MovieDetail'
 import MovieList from './components/MovieList/MovieList'
 import Navbar from './components/Navbar/Navbar'
+import MovieDetail from './pages/MovieDetail/MovieDetail'
 
 type TabType = 'popular' | 'top_rated' | 'upcoming'
 
