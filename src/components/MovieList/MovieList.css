@@ -52,3 +52,39 @@
 	flex-wrap: wrap;
 	justify-content: space-evenly;
 }
+
+@media (max-width: 768px) {
+	.movie_list_header {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.75rem;
+		padding: 10px 16px;
+	}
+
+	.movie_list_fs {
+		flex-wrap: wrap;
+		gap: 0.75rem;
+	}
+
+	.movie_filter {
+		padding: 0;
+		margin: 0;
+	}
+
+	.movie_sorting {
+		margin: 0;
+	}
+
+	.movie_cards {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+		gap: 1rem;
+		padding: 0 16px 24px;
+	}
+}
+
+@media (max-width: 480px) {
+	.movie_cards {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}

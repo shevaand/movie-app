@@ -14,7 +14,6 @@
 .navbar_logo {
 	text-decoration: none;
 	color: inherit;
-	/* font-size: 30px; */
 	font-weight: 800;
 	cursor: pointer;
 	transition: opacity 0.2s ease;
@@ -49,4 +48,33 @@
 	width: 25px;
 	height: 25px;
 	margin-left: 7px;
+}
+
+@media (max-width: 600px) {
+	.navbar {
+		flex-wrap: wrap;
+		justify-content: center;
+		row-gap: 4px;
+		padding: 8px 12px;
+
+		& > h1 {
+			font-size: 22px;
+		}
+	}
+
+	.navbar_links {
+		flex-wrap: wrap;
+		justify-content: center;
+
+		& > a {
+			font-size: 15px;
+			padding: 0 8px;
+		}
+	}
+
+	.navbar_links .navbar_emoji {
+		width: 18px;
+		height: 18px;
+		margin-left: 4px;
+	}
 }

@@ -21,6 +21,8 @@
 .movie_poster {
 	width: 100%;
 	height: 100%;
+	display: block;
+	object-fit: cover;
 }
 
 .movie_details {
@@ -59,4 +61,31 @@
 .movie_description {
 	font-size: 12px;
 	font-style: italic;
+}
+
+@media (max-width: 768px) {
+	.movie_card {
+		width: auto;
+		height: auto;
+		aspect-ratio: 2 / 3;
+		margin: 0;
+
+		&:hover {
+			transform: none;
+		}
+	}
+
+	.movie_details_heading {
+		font-size: 14px;
+	}
+}
+
+@media (hover: none) {
+	.movie_details {
+		opacity: 1;
+	}
+
+	.movie_description {
+		display: none;
+	}
 }

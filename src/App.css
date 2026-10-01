@@ -2,3 +2,36 @@
 	display: grid;
 	grid-template-rows: 80px auto;
 }
+
+.error_message {
+	text-align: center;
+	padding: 3rem 1rem;
+	font-size: 1.1rem;
+	opacity: 0.8;
+}
+
+.no_poster,
+.no_photo {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	background: rgba(128, 128, 128, 0.25);
+	opacity: 0.8;
+	font-size: 0.9rem;
+}
+
+.no_poster {
+	aspect-ratio: 2 / 3;
+	width: 100%;
+}
+
+.no_photo {
+	aspect-ratio: 2 / 3;
+}
+
+@media (max-width: 600px) {
+	.app {
+		grid-template-rows: auto auto;
+	}
+}
