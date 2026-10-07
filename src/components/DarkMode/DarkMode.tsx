@@ -1,15 +1,16 @@
+import type { ChangeEvent } from 'react'
 import Moon from '../../assets/Moon.svg?react'
 import Sun from '../../assets/Sun.svg?react'
 import './DarkMode.css'
 
 const DarkMode = () => {
 	const setDarkTheme = () => {
-		document.querySelector('body').setAttribute('data-theme', 'dark')
+		document.body.setAttribute('data-theme', 'dark')
 		localStorage.setItem('selectedTheme', 'dark')
 	}
 
 	const setLightTheme = () => {
-		document.querySelector('body').setAttribute('data-theme', 'light')
+		document.body.setAttribute('data-theme', 'light')
 		localStorage.setItem('selectedTheme', 'light')
 	}
 
@@ -21,7 +22,7 @@ const DarkMode = () => {
 		setDarkTheme()
 	}
 
-	const toggleTheme = e => {
+	const toggleTheme = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.checked) {
 			setDarkTheme()
 		} else {
